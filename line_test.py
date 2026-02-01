@@ -2,8 +2,8 @@ import requests
 import time
 
 # ====== LINE設定 ======
-CHANNEL_ACCESS_TOKEN = ""
-USER_ID = ""
+CHANNEL_ACCESS_TOKEN = os.environ["LINE_TOKEN"]
+USER_ID = os.environ["LINE_USER_ID"]
 
 LINE_URL = "https://api.line.me/v2/bot/message/push"
 HEADERS = {
@@ -48,4 +48,5 @@ if found:
     send_line(msg)
     print("空きあり → LINE通知送信")
 else:
+
     print("空きなし")
