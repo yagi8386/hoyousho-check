@@ -1,3 +1,4 @@
+import os
 import requests
 import time
 
@@ -50,3 +51,4 @@ if found:
 else:
 
     print("空きなし")
+
