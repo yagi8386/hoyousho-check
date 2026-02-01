@@ -2,7 +2,7 @@ name: hoyousho check
 
 on:
   schedule:
-    - cron: "0 * * * *"  # 1時間ごと
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
