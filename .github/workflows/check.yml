@@ -2,7 +2,7 @@ name: hoyousho check
 
 on:
   workflow_dispatch:
-  repository_dispatch:
+  
 jobs:
   run:
     runs-on: ubuntu-latest
