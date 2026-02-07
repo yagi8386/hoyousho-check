@@ -25,9 +25,6 @@ URLS = {
 KEYWORDS = ["空き状況カレンダー"]
 OK_KEYWORDS = ["空き部屋がございません"]
 
-#正常
-status: int = 0
-
 def send_line(message):
     data = {
         "to": USER_ID,
@@ -35,19 +32,20 @@ def send_line(message):
             {"type": "text", "text": message}
         ]
     }
-    requests.post(LINE_URL, headers=HEADERS, json=data)
+    res = requests.post(LINE_URL, headers=HEADERS, json=data)
+    if res.status_code != 200:
+        print(res.text)
 
 # ====== メイン処理 ======
 
-def check_hoyousho(name, url):
-    html = requests.get(url, timeout=10).text
+def check_hoyousho(name, html):
     soup = BeautifulSoup(html, "html.parser")
 
     select = soup.find("select", id="apply_join_time")
 
     if not select:
         print(f"{name}: 空きなし")
-        return None
+        return []
 
     dates = []
     for opt in select.find_all("option"):
@@ -59,36 +57,41 @@ def check_hoyousho(name, url):
     print(f"{name}: 空きあり {len(dates)}日")
     return dates
 
-
+#正常
+has_error = False
 found_messages = []
 
 for name, url in URLS.items():
     
     print(f"チェック中: {name}")
-    html = requests.get(url, timeout=10).text
+    try:
+        html = requests.get(url, timeout=10).text
+        if any(word in html for word in OK_KEYWORDS):
+            print(f"{name}: 空きなし")
+            time.sleep(2)
+            continue
+    except requests.RequestException as e:
+        print(f"{name}: 通信エラー {e}")
+        has_error = True
+        continue
 
-    if any(word in html for word in KEYWORDS):
-        dates = check_hoyousho(name, url)
+    dates = check_hoyousho(name, html)
+
+    if dates:
         msg = f"🏨 {name} に空きがあります！\n\n"
         msg += "📅 空いている日付:\n"
         msg += "\n".join(dates[:10])  # 多すぎ防止
         msg += f"\n\n🔗 {url}"
         found_messages.append(msg)
-        # 空きあり
-        status = 1
-    elif any(word in html for word in OK_KEYWORDS):
-        # 空き無し
-        status = 0
     else:
-        # アクセスエラー
-        status = 2
+       pass
 
     time.sleep(2)
 
-if status == 1:
+if found_messages:
     send_line("\n\n".join(found_messages))
     print("LINE通知送信")
-elif status == 2:
+elif has_error:
     msg = "アクセスエラー発生"
     send_line(msg)
     print("アクセスエラー発生 → LINE通知送信")
