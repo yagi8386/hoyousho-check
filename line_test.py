@@ -48,7 +48,7 @@ for name, url in URLS.items():
         status = 1
     elif any(word in html for word in OK_KEYWORDS):
         found.append(f"OK_KEYWORDS")
-    else
+    else:
     	#アクセスエラー
         status = 2
 
@@ -58,7 +58,7 @@ if status == 1:
     msg = "🏨 保養所に空きが出ました！\n\n" + "\n\n".join(found)
     send_line(msg)
     print("空きあり → LINE通知送信")
-elif status == 2
+elif status == 2:
      msg = "アクセスエラー発生"
     send_line(msg)
     print("アクセスエラー発生 → LINE通知送信")
