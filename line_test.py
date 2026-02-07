@@ -44,12 +44,12 @@ for name, url in URLS.items():
 
     if any(word in html for word in KEYWORDS):
         found.append(f"{name}\n{url}")
-        #空きあり
+        # 空きあり
         status = 1
     elif any(word in html for word in OK_KEYWORDS):
-        found.append(f"OK_KEYWORDS")
+        found.append("OK_KEYWORDS")
     else:
-    	#アクセスエラー
+        # アクセスエラー
         status = 2
 
     time.sleep(2)  # アクセス間隔（重要）
