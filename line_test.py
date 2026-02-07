@@ -1,10 +1,9 @@
-import os
 import requests
 import time
 
 # ====== LINE設定 ======
-CHANNEL_ACCESS_TOKEN = os.environ["LINE_TOKEN"]
-USER_ID = os.environ["LINE_USER_ID"]
+CHANNEL_ACCESS_TOKEN = ""
+USER_ID = ""
 
 LINE_URL = "https://api.line.me/v2/bot/message/push"
 HEADERS = {
@@ -22,6 +21,10 @@ URLS = {
 
 # ====== 空き判定キーワード ======
 KEYWORDS = ["空き状況カレンダー"]
+OK_KEYWORDS = ["空き部屋がございません"]
+
+#空き無し
+status: int = 0
 
 def send_line(message):
     data = {
@@ -41,14 +44,23 @@ for name, url in URLS.items():
 
     if any(word in html for word in KEYWORDS):
         found.append(f"{name}\n{url}")
+        #空きあり
+        status = 1
+    elif any(word in html for word in OK_KEYWORDS):
+        found.append(f"OK_KEYWORDS")
+    else
+    	#アクセスエラー
+        status = 2
 
     time.sleep(2)  # アクセス間隔（重要）
 
-if found:
+if status == 1:
     msg = "🏨 保養所に空きが出ました！\n\n" + "\n\n".join(found)
     send_line(msg)
     print("空きあり → LINE通知送信")
+elif status == 2
+     msg = "アクセスエラー発生"
+    send_line(msg)
+    print("アクセスエラー発生 → LINE通知送信")
 else:
-
     print("空きなし")
-
