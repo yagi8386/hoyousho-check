@@ -1,5 +1,7 @@
+import os
 import requests
 import time
+from bs4 import BeautifulSoup
 
 # ====== LINE設定 ======
 CHANNEL_ACCESS_TOKEN = ""
@@ -21,10 +23,6 @@ URLS = {
 
 # ====== 空き判定キーワード ======
 KEYWORDS = ["空き状況カレンダー"]
-OK_KEYWORDS = ["空き部屋がございません"]
-
-#空き無し
-status: int = 0
 
 def send_line(message):
     data = {
@@ -36,31 +34,45 @@ def send_line(message):
     requests.post(LINE_URL, headers=HEADERS, json=data)
 
 # ====== メイン処理 ======
-found = []
+
+def check_hoyousho(name, url):
+    html = requests.get(url, timeout=10).text
+    soup = BeautifulSoup(html, "html.parser")
+
+    select = soup.find("select", id="apply_join_time")
+
+    if not select:
+        print(f"{name}: 空きなし")
+        return None
+
+    dates = []
+    for opt in select.find_all("option"):
+        value = opt.get("value")
+        text = opt.text.strip()
+        if value:
+            dates.append(text)
+
+    print(f"{name}: 空きあり {len(dates)}日")
+    return dates
+
+
+found_messages = []
 
 for name, url in URLS.items():
     print(f"チェック中: {name}")
-    html = requests.get(url, timeout=10).text
+    dates = check_hoyousho(name, url)
 
-    if any(word in html for word in KEYWORDS):
-        found.append(f"{name}\n{url}")
-        # 空きあり
-        status = 1
-    elif any(word in html for word in OK_KEYWORDS):
-        found.append("OK_KEYWORDS")
-    else:
-        # アクセスエラー
-        status = 2
+    if dates:
+        msg = f"🏨 {name} に空きがあります！\n\n"
+        msg += "📅 空いている日付:\n"
+        msg += "\n".join(dates[:10])  # 多すぎ防止
+        msg += f"\n\n🔗 {url}"
+        found_messages.append(msg)
 
-    time.sleep(2)  # アクセス間隔（重要）
+    time.sleep(2)
 
-if status == 1:
-    msg = "🏨 保養所に空きが出ました！\n\n" + "\n\n".join(found)
-    send_line(msg)
-    print("空きあり → LINE通知送信")
-elif status == 2:
-    msg = "アクセスエラー発生"
-    send_line(msg)
-    print("アクセスエラー発生 → LINE通知送信")
+if found_messages:
+    send_line("\n\n".join(found_messages))
+    print("LINE通知送信")
 else:
-    print("空きなし")
+    print("今回は空きなし")
