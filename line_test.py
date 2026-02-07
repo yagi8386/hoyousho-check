@@ -59,7 +59,7 @@ if status == 1:
     send_line(msg)
     print("空きあり → LINE通知送信")
 elif status == 2:
-     msg = "アクセスエラー発生"
+    msg = "アクセスエラー発生"
     send_line(msg)
     print("アクセスエラー発生 → LINE通知送信")
 else:
