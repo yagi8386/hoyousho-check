@@ -2,7 +2,7 @@ name: hoyousho check
 
 on:
   workflow_dispatch:
-  
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -16,8 +16,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests
-          pip install beautifulsoup4
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
 
       - name: Run script
         env:
