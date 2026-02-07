@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 import time
@@ -36,8 +37,6 @@ def send_line(message):
     if res.status_code != 200:
         print(res.text)
 
-# ====== メイン処理 ======
-
 def check_hoyousho(name, html):
     soup = BeautifulSoup(html, "html.parser")
 
@@ -57,9 +56,23 @@ def check_hoyousho(name, html):
     print(f"{name}: 空きあり {len(dates)}日")
     return dates
 
-#正常
-has_error = False
-found_messages = []
+def load_last_dates():
+    try:
+        with open("last_dates.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+def save_last_dates(data):
+    with open("last_dates.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+# ====== メイン処理 ======
+last_dates = load_last_dates()
+current_dates = {}
+messages = []
+
+has_error = False #正常
 
 for name, url in URLS.items():
     
@@ -73,23 +86,28 @@ for name, url in URLS.items():
     except requests.RequestException as e:
         print(f"{name}: 通信エラー {e}")
         has_error = True
+        time.sleep(2)
         continue
 
     dates = check_hoyousho(name, html)
+    current_dates[name] = dates
+    
+    old = set(last_dates.get(name, []))
+    new = set(dates)
 
-    if dates:
+    diff = sorted(new - old)
+
+    if diff:
         msg = f"🏨 {name} に空きがあります！\n\n"
         msg += "📅 空いている日付:\n"
-        msg += "\n".join(dates[:10])  # 多すぎ防止
+        msg += "\n".join(diff)
         msg += f"\n\n🔗 {url}"
-        found_messages.append(msg)
-    else:
-       pass
+        messages.append(msg)
 
     time.sleep(2)
 
-if found_messages:
-    send_line("\n\n".join(found_messages))
+if messages:
+    send_line("\n\n".join(messages))
     print("LINE通知送信")
 elif has_error:
     msg = "アクセスエラー発生"
@@ -97,3 +115,8 @@ elif has_error:
     print("アクセスエラー発生 → LINE通知送信")
 else:
     print("空きなし")
+
+if not has_error:
+    save_last_dates(current_dates)
+else:
+    print("エラーがあったため状態保存をスキップ")
