@@ -68,8 +68,12 @@ for name, url in URLS.items():
     html = requests.get(url, timeout=10).text
 
     if any(word in html for word in KEYWORDS):
-        #found.append(f"{name}\n{url}")
         dates = check_hoyousho(name, url)
+        msg = f"🏨 {name} に空きがあります！\n\n"
+        msg += "📅 空いている日付:\n"
+        msg += "\n".join(dates[:10])  # 多すぎ防止
+        msg += f"\n\n🔗 {url}"
+        found_messages.append(msg)
         # 空きあり
         status = 1
     elif any(word in html for word in OK_KEYWORDS):
@@ -78,13 +82,6 @@ for name, url in URLS.items():
     else:
         # アクセスエラー
         status = 2
-
-    if dates:
-        msg = f"🏨 {name} に空きがあります！\n\n"
-        msg += "📅 空いている日付:\n"
-        msg += "\n".join(dates[:10])  # 多すぎ防止
-        msg += f"\n\n🔗 {url}"
-        found_messages.append(msg)
 
     time.sleep(2)
 
