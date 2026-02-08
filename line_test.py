@@ -101,6 +101,10 @@ for name, url in URLS.items():
 
     diff = sorted(new - old)
 
+    print(f"{name} old:", old)
+    print(f"{name} new:", new)
+    print(f"{name} diff:", diff)
+
     if diff:
         msg = f"🏨 {name} に空きがあります！\n\n"
         msg += "📅 空いている日付:\n"
@@ -127,6 +131,7 @@ else:
 
 # print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
 # print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+
 
 
 
