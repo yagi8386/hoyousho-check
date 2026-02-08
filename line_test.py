@@ -37,6 +37,9 @@ def send_line(message):
     res = requests.post(LINE_URL, headers=HEADERS, json=data)
     if res.status_code != 200:
         print(res.text)
+    
+    print("LINE status:", res.status_code)
+    print("LINE response:", res.text)
 
 def check_hoyousho(name, html):
     soup = BeautifulSoup(html, "html.parser")
@@ -122,8 +125,9 @@ if not has_error:
 else:
     print("エラーがあったため状態保存をスキップ")
 
-print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
-print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+# print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
+# print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+
 
 
 
