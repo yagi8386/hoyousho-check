@@ -99,7 +99,8 @@ for name, url in URLS.items():
     old = set(last_dates.get(name, []))
     new = set(dates)
 
-    diff = sorted(new - old)
+    # diff = sorted(new - old)
+    diff = dates
 
     if diff:
         msg = f"🏨 {name} に空きがあります！\n\n"
@@ -128,6 +129,7 @@ else:
 
 # print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
 # print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+
 
 
 
