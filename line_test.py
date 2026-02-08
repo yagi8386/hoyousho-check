@@ -122,3 +122,7 @@ if not has_error:
 else:
     print("エラーがあったため状態保存をスキップ")
 
+print(HEADERS)
+print(res.status_code, res.text)
+
+
