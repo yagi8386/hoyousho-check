@@ -107,7 +107,7 @@ for name, url in URLS.items():
         msg += "\n".join(diff)
         msg += f"\n\n🔗 {url}"
         messages.append(msg)
-    print(f"{name} msg:", msg)
+        print(f"{name} msg:", msg)
 
     time.sleep(2)
 
@@ -128,6 +128,7 @@ else:
 
 # print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
 # print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+
 
 
 
