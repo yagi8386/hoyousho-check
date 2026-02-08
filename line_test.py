@@ -127,20 +127,3 @@ if not has_error:
     save_last_dates(current_dates)
 else:
     print("エラーがあったため状態保存をスキップ")
-
-# print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
-# print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
