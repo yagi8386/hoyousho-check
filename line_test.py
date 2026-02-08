@@ -11,7 +11,7 @@ USER_ID = os.getenv("LINE_USER_ID")
 #------回数確認--------
 url = "https://api.line.me/v2/bot/message/quota/consumption"
 headers = {
-    "Authorization": f"Bearer {LINE_TOKEN}"
+    "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN }"
 }
 #--------------
 
@@ -139,4 +139,5 @@ if not has_error:
     save_last_dates(current_dates)
 else:
     print("エラーがあったため状態保存をスキップ")
+
 
