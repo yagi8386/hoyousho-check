@@ -37,7 +37,8 @@ def send_line(message):
     res = requests.post(LINE_URL, headers=HEADERS, json=data)
     if res.status_code != 200:
         print(res.text)
-    
+
+    print("TOKEN exists:", bool(CHANNEL_ACCESS_TOKEN))
     print("LINE status:", res.status_code)
     print("LINE response:", res.text)
 
@@ -129,6 +130,7 @@ else:
 
 # print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
 # print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+
 
 
 
