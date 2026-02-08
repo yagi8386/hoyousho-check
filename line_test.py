@@ -5,8 +5,8 @@ import time
 from bs4 import BeautifulSoup
 
 # ====== LINE設定 ======
-CHANNEL_ACCESS_TOKEN = ""
-USER_ID = ""
+CHANNEL_ACCESS_TOKEN = os.getenv("LINE_TOKEN")
+USER_ID = os.getenv("LINE_USER_ID")
 
 LINE_URL = "https://api.line.me/v2/bot/message/push"
 HEADERS = {
@@ -130,6 +130,7 @@ else:
 
 # print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
 # print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+
 
 
 
