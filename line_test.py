@@ -1,5 +1,7 @@
 import json
 import os
+print("ENV LINE_TOKEN:", os.environ.get("LINE_TOKEN"))
+print("ENV LINE_USER_ID:", os.environ.get("LINE_USER_ID"))
 import requests
 import time
 from bs4 import BeautifulSoup
@@ -130,6 +132,7 @@ else:
 
 # print("LINE_TOKEN exists:", bool(os.getenv("LINE_TOKEN")))
 # print("LINE_USER_ID exists:", bool(os.getenv("LINE_USER_ID")))
+
 
 
 
