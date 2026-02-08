@@ -8,6 +8,18 @@ from bs4 import BeautifulSoup
 CHANNEL_ACCESS_TOKEN = os.getenv("LINE_TOKEN")
 USER_ID = os.getenv("LINE_USER_ID")
 
+#------回数確認--------
+url = "https://api.line.me/v2/bot/message/quota/consumption"
+headers = {
+    "Authorization": f"Bearer {LINE_TOKEN}"
+}
+#--------------
+
+res = requests.get(url, headers=headers)
+
+print("status:", res.status_code)
+print("response:", res.text)
+
 LINE_URL = "https://api.line.me/v2/bot/message/push"
 HEADERS = {
     "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}",
@@ -127,3 +139,4 @@ if not has_error:
     save_last_dates(current_dates)
 else:
     print("エラーがあったため状態保存をスキップ")
+
