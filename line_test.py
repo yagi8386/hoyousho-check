@@ -7,23 +7,10 @@ from bs4 import BeautifulSoup
 # ====== srack設定 ======
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
-#------回数確認--------
-url = "https://api.line.me/v2/bot/message/quota/consumption"
-headers = {
-    "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN }"
-}
-#--------------
-
 res = requests.get(url, headers=headers)
 
 print("status:", res.status_code)
 print("response:", res.text)
-
-LINE_URL = "https://api.line.me/v2/bot/message/push"
-HEADERS = {
-    "Authorization": f"Bearer {CHANNEL_ACCESS_TOKEN}",
-    "Content-Type": "application/json"
-}
 
 # ====== 保養所URL（場所違い） ======
 URLS = {
