@@ -7,11 +7,6 @@ from bs4 import BeautifulSoup
 # ====== srack設定 ======
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
-res = requests.get(url, headers=headers)
-
-print("status:", res.status_code)
-print("response:", res.text)
-
 # ====== 保養所URL（場所違い） ======
 URLS = {
     "熱海": "https://as.its-kenpo.or.jp/apply/empty_new?s=PUVETnpJVFBrbG1KbFZuYzAxVFp5Vkhkd0YyWWZWR2JuOTJiblpTWjFKSGQ5a0hkdzFXWg%3D%3D",
@@ -22,7 +17,7 @@ URLS = {
 }
 
 # ====== 空き判定キーワード ======
-KEYWORDS = ["空き状況カレンダー"]
+#KEYWORDS = ["空き状況カレンダー"]
 OK_KEYWORDS = ["空き部屋がございません"]
 
 def send_slack(message):
