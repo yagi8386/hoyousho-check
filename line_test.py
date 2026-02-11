@@ -94,8 +94,8 @@ for name, url in URLS.items():
     old = set(last_dates.get(name, []))
     new = set(dates)
 
-    # diff = sorted(new - old)
-    diff = dates
+    diff = sorted(new - old)
+    # diff = dates
 
     if diff:
         msg = f"🏨 {name} に空きがあります！\n\n"
@@ -123,5 +123,6 @@ if not has_error:
     save_last_dates(current_dates)
 else:
     print("エラーがあったため状態保存をスキップ")
+
 
 
