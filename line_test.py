@@ -4,9 +4,8 @@ import requests
 import time
 from bs4 import BeautifulSoup
 
-# ====== LINE設定 ======
-CHANNEL_ACCESS_TOKEN = os.getenv("LINE_TOKEN")
-USER_ID = os.getenv("LINE_USER_ID")
+# ====== srack設定 ======
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
 
 #------回数確認--------
 url = "https://api.line.me/v2/bot/message/quota/consumption"
@@ -39,20 +38,21 @@ URLS = {
 KEYWORDS = ["空き状況カレンダー"]
 OK_KEYWORDS = ["空き部屋がございません"]
 
-def send_line(message):
-    data = {
-        "to": USER_ID,
-        "messages": [
-            {"type": "text", "text": message}
-        ]
+def send_slack(message):
+    if not SLACK_WEBHOOK_URL:
+        print("Slack Webhook 未設定")
+        return
+
+    payload = {
+        "text": message
     }
-    res = requests.post(LINE_URL, headers=HEADERS, json=data)
+
+    res = requests.post(SLACK_WEBHOOK_URL, json=payload)
     if res.status_code != 200:
         print(res.text)
 
-    print("TOKEN exists:", bool(CHANNEL_ACCESS_TOKEN))
-    print("LINE status:", res.status_code)
-    print("LINE response:", res.text)
+    print("Slack status:", res.status_code)
+    print("Slack response:", res.text)
 
 def check_hoyousho(name, html):
     soup = BeautifulSoup(html, "html.parser")
@@ -126,12 +126,14 @@ for name, url in URLS.items():
     time.sleep(2)
 
 if messages:
-    send_line("\n\n".join(messages))
-    print("LINE通知送信")
+    full_message = "\n\n".join(messages)
+    send_slack(full_message)
+
+    print("Slack通知送信")
 elif has_error:
     msg = "アクセスエラー発生"
-    send_line(msg)
-    print("アクセスエラー発生 → LINE通知送信")
+    send_slack(msg)
+    print("アクセスエラー発生 → srack通知送信")
 else:
     print("空きなし")
 
@@ -139,5 +141,4 @@ if not has_error:
     save_last_dates(current_dates)
 else:
     print("エラーがあったため状態保存をスキップ")
-
 
