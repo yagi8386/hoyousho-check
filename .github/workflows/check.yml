@@ -15,7 +15,7 @@ jobs:
         with:
           name: last-dates
           path: .
-        continue-on-error: true  # 初回は無くてもOK
+        continue-on-error: true
 
       - name: Python setup
         uses: actions/setup-python@v5
@@ -37,3 +37,4 @@ jobs:
         with:
           name: last-dates
           path: last_dates.json
+          overwrite: true
