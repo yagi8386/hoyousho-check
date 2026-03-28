@@ -3,15 +3,19 @@ name: hoyousho check
 on:
   workflow_dispatch:
 
-concurrency:
-  group: hoyousho-check
-  cancel-in-progress: false
-
 jobs:
   run:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download last data
+        uses: actions/download-artifact@v4
+        with:
+          name: last-dates
+          path: .
+        continue-on-error: true  # 初回は無くてもOK
 
       - name: Python setup
         uses: actions/setup-python@v5
@@ -20,28 +24,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
-          pip install aiohttp
-          pip install beautifulsoup4
-          pip install requests
+          pip install aiohttp requests beautifulsoup4
+          
 
       - name: Run script
         env:
-          LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
-          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: python line_test.py
 
-      - name: Commit & Push
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add last_dates.json
-          git commit -m "update last dates" || echo "no changes"
-
-          for i in 1 2 3; do
-            git pull --rebase origin main && git push origin main && break
-            sleep 2
-          done
-
+      - name: Upload last data
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-dates
+          path: last_dates.json
