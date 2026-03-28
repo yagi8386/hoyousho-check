@@ -3,6 +3,10 @@ name: hoyousho check
 on:
   workflow_dispatch:
 
+concurrency:
+  group: hoyousho-check
+  cancel-in-progress: true
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -29,10 +33,14 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: python line_test.py
 
-      - name: Commit last_dates.json
+      - name: Commit & Push
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add last_dates.json
           git commit -m "update last dates" || echo "no changes"
-          git push
+
+          # 最新を取り込んでからpush（競合対策）
+          git pull --rebase origin main
+
+          git push origin main
