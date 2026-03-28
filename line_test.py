@@ -56,6 +56,10 @@ def check_hoyousho(name, html):
 
 # ====== 状態保存 ======
 def load_last_dates():
+    if not os.path.exists("last_dates.json"):
+        print("前回データなし（初回扱い）")
+        return {}
+
     try:
         with open("last_dates.json", "r", encoding="utf-8") as f:
             return json.load(f)
@@ -65,6 +69,8 @@ def load_last_dates():
 def save_last_dates(data):
     with open("last_dates.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+    print("保存完了:", len(data))
 
 # ====== 非同期処理 ======
 async def fetch_and_check(session, name, url, last_dates):
