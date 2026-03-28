@@ -29,6 +29,8 @@ USER_AGENTS = [
     "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)",
 ]
 
+SAVE_PATH = "last_dates.json"
+
 # ====== Slack送信 ======
 def send_slack(message):
     if not SLACK_WEBHOOK_URL:
