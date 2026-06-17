@@ -23,6 +23,7 @@ URLS = {
     "山梨フルーツパーク": "https://as.its-kenpo.or.jp/apply/empty_new?s=PUl6TTJJVFBrbG1KbFZuYzAxVFp5Vkhkd0YyWWZWR2JuOTJiblpTWjFKSGQ5a0hkdzFXWg%3D%3D",
     "蓼科": "https://as.its-kenpo.or.jp/apply/empty_new?s=PVVUTXlFVFBrbG1KbFZuYzAxVFp5Vkhkd0YyWWZWR2JuOTJiblpTWjFKSGQ5a0hkdzFXWg%3D%3D",
     "軽井沢マリオット": "https://as.its-kenpo.or.jp/apply/empty_new?s=PU1UTTBJVFBrbG1KbFZuYzAxVFp5Vkhkd0YyWWZWR2JuOTJiblpTWjFKSGQ5a0hkdzFXWg%3D%3D",
+    "浜名湖": "https://as.its-kenpo.or.jp/apply/empty_new?s=PVV6TjNFVFBrbG1KbFZuYzAxVFp5Vkhkd0YyWWZWR2JuOTJiblpTWjFKSGQ5a0hkdzFXWg%3D%3D",
     #"鎌倉": "",
     #"鬼怒川": "https://as.its-kenpo.or.jp/apply/empty_new?s=PU1UTzFJVFBrbG1KbFZuYzAxVFp5Vkhkd0YyWWZWR2JuOTJiblpTWjFKSGQ5a0hkdzFXWg%3D%3D",
     #"和奏林": "https://as.its-kenpo.or.jp/apply/empty_new?s=PT1RTzFjVFBrbG1KbFZuYzAxVFp5Vkhkd0YyWWZWR2JuOTJiblpTWjFKSGQ5a0hkdzFXWg%3D%3D",
