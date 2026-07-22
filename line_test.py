@@ -141,7 +141,8 @@ async def run_checks():
         send_slack("\n\n".join(messages))
         print("Slack通知送信")
     elif has_error:
-        send_slack("アクセスエラー発生")
+        #send_slack("アクセスエラー発生")
+        print("アクセスエラー発生")
     else:
         print("空きなし")
 
